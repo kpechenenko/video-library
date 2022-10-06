@@ -26,7 +26,7 @@ public final class VideoLibraryService implements QueriesToDataBaseFromTaskDescr
             from movies m
                      left join producing_countries c on c.id = m.country_of_production_id
                      left join people p on p.id = m.producer_id
-            where (m.premiere_date >= current_date - interval ? year)
+            where (m.premiere_date >= current_date - interval '1 year' * ?)
               and (m.premiere_date < current_date)
             """;
 
@@ -77,7 +77,7 @@ public final class VideoLibraryService implements QueriesToDataBaseFromTaskDescr
             var connection = getConnection();
             var preparedStatement = connection.prepareStatement(FIND_MOVIES_RELEASED_RECENTLY_QUERY)
         ) {
-            preparedStatement.setString(1, numberOfYears.toString());
+            preparedStatement.setInt(1, numberOfYears);
             try (var resultSet = preparedStatement.executeQuery()) {
                 List<Movie> movies = new ArrayList<>();
                 while (resultSet.next()) {
