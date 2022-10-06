@@ -8,14 +8,17 @@ import java.sql.SQLException;
 
 public final class DataSource {
     private static final String PATH_TO_APPLICATION_PROPERTIES_FILE = "./src/main/resources/application.properties";
-    private static final HikariDataSource dataSource = new HikariDataSource(
-        new HikariConfig(PATH_TO_APPLICATION_PROPERTIES_FILE)
-    );
+    private final HikariDataSource dataSource;
 
-    private DataSource() {
+    public DataSource() {
+        this(PATH_TO_APPLICATION_PROPERTIES_FILE);
     }
 
-    public static Connection getConnection() throws SQLException {
-        return dataSource.getConnection();
+    public DataSource(String pathToPropertiesFile) {
+        this.dataSource = new HikariDataSource(new HikariConfig(pathToPropertiesFile));
+    }
+
+    public Connection getConnection() throws SQLException {
+        return this.dataSource.getConnection();
     }
 }

@@ -9,9 +9,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static ru.kpechenenko.video.library.DataSource.getConnection;
+import ru.kpechenenko.video.library.DataSource;
 
 public final class VideoLibraryService implements QueriesToDataBaseFromTaskDescription {
+    private final DataSource dataSource;
+
+    public VideoLibraryService(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
     private static final String FIND_MOVIES_RELEASED_RECENTLY_QUERY =
         """
             select
@@ -72,9 +78,10 @@ public final class VideoLibraryService implements QueriesToDataBaseFromTaskDescr
             """;
 
     @Override
+
     public List<Movie> findAllMoviesReleasedInLastNYears(Integer numberOfYears) {
         try (
-            var connection = getConnection();
+            var connection = this.dataSource.getConnection();
             var preparedStatement = connection.prepareStatement(FIND_MOVIES_RELEASED_RECENTLY_QUERY)
         ) {
             preparedStatement.setInt(1, numberOfYears);
@@ -109,7 +116,7 @@ public final class VideoLibraryService implements QueriesToDataBaseFromTaskDescr
     @Override
     public List<Person> findAllActorsOfMovie(Integer movieId) {
         try (
-            var connection = getConnection();
+            var connection = this.dataSource.getConnection();
             var preparedStatement = connection.prepareStatement(FIND_ACTORS_OF_MOVIE_QUERY)
         ) {
             preparedStatement.setInt(1, movieId);
@@ -124,7 +131,7 @@ public final class VideoLibraryService implements QueriesToDataBaseFromTaskDescr
     @Override
     public List<Person> findAllActorsWhoStarredOnNMovies(Integer numberOfMovies) {
         try (
-            var connection = getConnection();
+            var connection = this.dataSource.getConnection();
             var preparedStatement = connection.prepareStatement(FIND_ACTORS_WHO_STARRED_ON_N_MOVIES_QUERY)
         ) {
             preparedStatement.setInt(1, numberOfMovies);
@@ -139,7 +146,7 @@ public final class VideoLibraryService implements QueriesToDataBaseFromTaskDescr
     @Override
     public List<Person> findAllActorsWhoWereProducers() {
         try (
-            var connection = getConnection();
+            var connection = this.dataSource.getConnection();
             var preparedStatement = connection.prepareStatement(FIND_ACTORS_WHO_WERE_PRODUCERS_QUERY);
             var resultSet = preparedStatement.executeQuery()
         ) {
@@ -152,7 +159,7 @@ public final class VideoLibraryService implements QueriesToDataBaseFromTaskDescr
     @Override
     public int deleteAllMoviesThatPremierEarlyThatNYearsAgo(Integer numberOfYears) {
         try (
-            var connection = getConnection();
+            var connection = this.dataSource.getConnection();
             var preparedStatement = connection.prepareStatement(DELETE_ALL_OLD_MOVIES_QUERY)
         ) {
             preparedStatement.setInt(1, numberOfYears);

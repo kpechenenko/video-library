@@ -9,7 +9,7 @@ import static org.junit.Assert.*;
 public final class DataBaseConnectionCreatorTest {
     @Test
     public void shouldReturnConnectionToExistingDatabase() {
-        try (var connection = DataSource.getConnection()) {
+        try (var connection = new DataSource().getConnection()) {
             assertTrue(connection.isValid(1));
             assertFalse(connection.isClosed());
         } catch (SQLException e) {
