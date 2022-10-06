@@ -114,7 +114,7 @@ public final class VideoLibraryService implements QueriesToDataBaseFromTaskDescr
         ) {
             preparedStatement.setInt(1, movieId);
             try (var resultSet = preparedStatement.executeQuery()) {
-                return this.extractPeople(resultSet);
+                return this.extractActors(resultSet);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -129,7 +129,7 @@ public final class VideoLibraryService implements QueriesToDataBaseFromTaskDescr
         ) {
             preparedStatement.setInt(1, numberOfMovies);
             try (var resultSet = preparedStatement.executeQuery()) {
-                return this.extractPeople(resultSet);
+                return this.extractActors(resultSet);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -143,7 +143,7 @@ public final class VideoLibraryService implements QueriesToDataBaseFromTaskDescr
             var preparedStatement = connection.prepareStatement(FIND_ACTORS_WHO_WERE_PRODUCERS_QUERY);
             var resultSet = preparedStatement.executeQuery()
         ) {
-            return this.extractPeople(resultSet);
+            return this.extractActors(resultSet);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -162,10 +162,10 @@ public final class VideoLibraryService implements QueriesToDataBaseFromTaskDescr
         }
     }
 
-    private List<Person> extractPeople(ResultSet resultSet) throws SQLException {
-        List<Person> people = new ArrayList<>();
+    private List<Person> extractActors(ResultSet resultSet) throws SQLException {
+        List<Person> actors = new ArrayList<>();
         while (resultSet.next()) {
-            people.add(
+            actors.add(
                 new Person(
                     resultSet.getInt("id"),
                     resultSet.getString("name"),
@@ -173,6 +173,6 @@ public final class VideoLibraryService implements QueriesToDataBaseFromTaskDescr
                 )
             );
         }
-        return people;
+        return actors;
     }
 }
