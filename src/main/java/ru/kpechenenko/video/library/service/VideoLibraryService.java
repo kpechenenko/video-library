@@ -68,7 +68,7 @@ public final class VideoLibraryService implements QueriesToDataBaseFromTaskDescr
         """
             delete
             from movies
-            where (premiere_date <= current_date - interval ? year)
+            where (premiere_date <= current_date - interval '1 year' * ?)
             """;
 
     @Override
@@ -155,7 +155,7 @@ public final class VideoLibraryService implements QueriesToDataBaseFromTaskDescr
             var connection = getConnection();
             var preparedStatement = connection.prepareStatement(DELETE_ALL_OLD_MOVIES_QUERY)
         ) {
-            preparedStatement.setString(1, numberOfYears.toString());
+            preparedStatement.setInt(1, numberOfYears);
             return preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
