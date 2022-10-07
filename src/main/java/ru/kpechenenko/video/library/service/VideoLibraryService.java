@@ -78,7 +78,6 @@ public final class VideoLibraryService implements QueriesToDataBaseFromTaskDescr
             """;
 
     @Override
-
     public List<Movie> findAllMoviesReleasedInLastNYears(Integer numberOfYears) {
         try (
             var connection = this.dataSource.getConnection();
