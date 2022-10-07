@@ -109,7 +109,10 @@ public final class VideoLibraryService implements QueriesToDataBaseFromTaskDescr
                 return movies;
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(
+                "Error when searching all movies released in last %d years.".formatted(numberOfYears),
+                e
+            );
         }
     }
 
@@ -124,7 +127,10 @@ public final class VideoLibraryService implements QueriesToDataBaseFromTaskDescr
                 return this.extractActors(resultSet);
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(
+                "Error when searching actors of movie with id #%d.".formatted(movieId),
+                e
+            );
         }
     }
 
@@ -139,7 +145,10 @@ public final class VideoLibraryService implements QueriesToDataBaseFromTaskDescr
                 return this.extractActors(resultSet);
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(
+                "Error when searching actors who starred on %d movies.".formatted(numberOfMovies),
+                e
+            );
         }
     }
 
@@ -152,7 +161,10 @@ public final class VideoLibraryService implements QueriesToDataBaseFromTaskDescr
         ) {
             return this.extractActors(resultSet);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(
+                "Error when searching actors who were producers.",
+                e
+            );
         }
     }
 
@@ -165,7 +177,10 @@ public final class VideoLibraryService implements QueriesToDataBaseFromTaskDescr
             preparedStatement.setInt(1, numberOfYears);
             return preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(
+                "Error when deleting movies that premier early that %d years ago.".formatted(numberOfYears),
+                e
+            );
         }
     }
 
