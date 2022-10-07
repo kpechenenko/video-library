@@ -16,7 +16,7 @@ public final class VideoLibraryServiceTest {
 
     public VideoLibraryServiceTest() {
         this.dataSource = new DataSource();
-        this.videoLibraryService = new VideoLibraryService(this.dataSource);
+        this.videoLibraryService = new VideoLibraryServiceImpl(this.dataSource);
     }
 
     @Before
