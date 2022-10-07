@@ -263,7 +263,8 @@ public final class VideoLibraryServiceTest {
             int releaseYearAgo = 30;
             var moviesBefore = this.videoLibraryService.findAllMoviesReleasedInLastNYears(releaseYearAgo);
             assertFalse(moviesBefore.isEmpty());
-            this.videoLibraryService.deleteAllMoviesThatPremierEarlyThatNYearsAgo(releaseYearAgo / 2);
+            int numOfDeleted = this.videoLibraryService.deleteAllMoviesThatPremierEarlyThatNYearsAgo(releaseYearAgo / 2);
+            assertTrue(numOfDeleted > 0);
             var moviesAfter = this.videoLibraryService.findAllMoviesReleasedInLastNYears(releaseYearAgo);
             assertTrue(moviesAfter.isEmpty());
         } catch (Exception e) {
